@@ -1,28 +1,25 @@
-let result = 0;
-
-async function converter( variable, currency1, currency2, value, setIsLoaded ){
-    setIsLoaded(false);
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': '838174d82amsh8b2587e30c54035p196e06jsn335b2daf42df',
-            'X-RapidAPI-Host': 'currency-converter-by-api-ninjas.p.rapidapi.com'
-        }
-    };
-
+export default class Converter{
+    _apiBase = 'https://currency-converter-by-api-ninjas.p.rapidapi.com/v1/convertcurrency?have=';
     
-    await fetch(`https://currency-converter-by-api-ninjas.p.rapidapi.com/v1/convertcurrency?have=${currency1}&want=${currency2}&amount=${value}`, options)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            setIsLoaded(true);
-            variable = data.new_amount
-        })
-        .catch(err => console.error(err));
+    async getResource( currency1, currency2, amount ){
+        const options = { 
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '838174d82amsh8b2587e30c54035p196e06jsn335b2daf42df',
+                'X-RapidAPI-Host': 'currency-converter-by-api-ninjas.p.rapidapi.com'
+            }
+        };
+        const res = await fetch(`${this._apiBase}${currency1}&want=${currency2}&amount=${amount}`, options);
 
-    console.log(variable);
-    return variable;
-}
+        if(!res.ok){
+            throw console.log(`Could not fetch recived ${res.status}`);
+        }
 
-export default converter;
+        return await res.json();
+    }
+
+    async getResult( currency1, currency2, amount ) {
+        const res = await this.getResource( currency1, currency2, amount );
+        return res.new_amount;
+    }
+} 

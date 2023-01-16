@@ -1,21 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import './header.css';
 import USD from '../../img/USA-flag.png';
 import EUR from '../../img/EUR-flag.png';
-import converter from '../../services/converter-services';
+import Converter from "../../services/converter-services";
 
-const Header = () => {
-    const [ isLoaded, setIsLoaded ] = useState(false);
-    let USDtoUAH = 0;
-    let EURtoUAH = 0;
+export default class Header extends Component {
 
-    useEffect(() => {
-        converter( USDtoUAH, 'USD', 'UAH', 1, setIsLoaded);
-        converter( EURtoUAH, 'EUR', 'UAH', 1, setIsLoaded);
-        // return () => value = converter( 'USD', 'UAH', 1, setIsLoaded );
-    }, [USDtoUAH])
+    converter = new Converter();
 
-    if(!isLoaded){
+    state = {
+        USDtoUAH: 0,
+        EURtoUAH: 0
+    }
+
+    componentDidMount() {
+        this.updateCurrency( 'USD', 'UAH', 1 );
+        this.updateCurrency( 'EUR', 'UAH', 1 );
+    }
+
+    updateCurrency( currency1, currency2, amount ) {
+        this.converter.getResult( currency1, currency2, amount )
+        .then((new_amount) => {
+            if(currency1 === 'USD') {
+                this.setState({
+                    USDtoUAH: new_amount
+                })
+            } else if(currency1 === 'EUR') {
+                this.setState({
+                    EURtoUAH: new_amount
+                })
+            }
+        })
+    }
+
+    render() {
         return (
             <header>
                 <div className='container'>
@@ -23,35 +41,15 @@ const Header = () => {
                     <ul className='currencys'>
                         <li className='currency__USD'>
                             <img src={USD} alt='USD-flag'/>
-                            <p></p>
+                            <p>${this.state.USDtoUAH}</p>
                         </li>
                         <li className='currency__EUR'>
                             <img src={EUR} alt='EUR-flag'/>
-                            <p></p>
-                        </li>
-                    </ul>
-                </div>
-            </header>
-        );
-    } else {
-        return (
-            <header>
-                <div className='container'>
-                    <div></div>
-                    <ul className='currencys'>
-                        <li className='currency__USD'>
-                            <img src={USD} alt='USD-flag'/>
-                            <p>${USDtoUAH}</p>
-                        </li>
-                        <li className='currency__EUR'>
-                            <img src={EUR} alt='EUR-flag'/>
-                            <p>€{EURtoUAH}</p>
-                        </li>
+                            <p>€{this.state.EURtoUAH}</p>
+                        </li> 
                     </ul>
                 </div>
             </header>
         );
     }
 }
-
-export default Header;
