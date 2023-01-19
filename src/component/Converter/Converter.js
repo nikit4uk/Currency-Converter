@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './converter.css';
 
 const Converter = () => {
+    const [oldValet, setOldValet] = useState(1);
+    const [newValet, setNewValet] = useState(0);
     return (
         <section id='converter'>
             <div className='container'>
@@ -12,10 +14,10 @@ const Converter = () => {
                         <option>GBR</option>
                         <option>UAH</option>
                     </select>
-                    <input onChange={() => {
-                        let input = document.querySelector('.converter__first-currency input')
-                        console.log(input.value)
-                    }} type='number'/>
+                    <input type='number' value={oldValet} onChange={(e) => {
+                        setOldValet(e.target.value)
+                        console.log(oldValet)
+                    }}/>
                 </div>
                 <div className='converter__second-currency'>
                     <select>
@@ -24,7 +26,7 @@ const Converter = () => {
                         <option>GBR</option>
                         <option>UAH</option>
                     </select>
-                    <input type='number'/>
+                    <input type='number' value={newValet}/>
                 </div>
             </div>
         </section>
