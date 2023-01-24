@@ -1,5 +1,5 @@
 import React from 'react';
-// import './currencys.scss';
+import './currencys.scss';
 import Currency from './Currency/Currency';
 
 const Currencys = () => {

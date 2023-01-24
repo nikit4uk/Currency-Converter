@@ -1,4 +1,4 @@
-async function getData( currency1 ) {
+async function getData( currency1, currency2, amount ) {
     let _apiBase = 'https://currency-converter-by-api-ninjas.p.rapidapi.com/v1/convertcurrency?have=';
     const options = { 
         method: 'GET',
@@ -7,7 +7,7 @@ async function getData( currency1 ) {
             'X-RapidAPI-Host': 'currency-converter-by-api-ninjas.p.rapidapi.com'
         }
     };
-    const res = await fetch(`${_apiBase}${currency1}&want=UAH&amount=1`, options);
+    const res = await fetch(`${_apiBase}${currency1}&want=${currency2}&amount=${amount}`, options);
     return await res.json();
 };
 
