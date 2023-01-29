@@ -25,14 +25,12 @@ const Converter = () => {
                         value={oldValet}
                         onChange={(e) => {
                             setOldValet(e.target.value)
-                            convertValet( oldCurrency, newCurrency,  oldValet);
                         }}
                     />
                     <select
                         defaultValue={oldCurrency}
                         onChange={(e) => {
                             setOldCurrency(e.target.value);
-                            convertValet( oldCurrency, newCurrency,  oldValet);
                         }}
                     >
                         <option>USD</option>
@@ -49,7 +47,6 @@ const Converter = () => {
                         defaultValue={newCurrency}
                         onChange={(e) => {
                             setNewCurrency(e.target.value)
-                            convertValet( oldCurrency, newCurrency,  oldValet);
                         }}
                     >
                         <option>USD</option>
@@ -60,6 +57,7 @@ const Converter = () => {
                         <option>UAH</option>
                     </select>
                 </label>
+                <button onClick={() => {convertValet( oldCurrency, newCurrency,  oldValet)}}>Convert</button>
             </div>
         </div>
     )
